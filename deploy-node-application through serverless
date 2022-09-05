@@ -1,0 +1,24 @@
+
+
+
+
+image: metacollective/serverless_ci
+pipelines:
+  branches:
+    default:
+      - step:
+          script:
+            - npm install
+    master:
+      - step:
+          caches:
+              - node
+              - pip
+          script:
+              - npm install
+              - npm install -g npm
+              - npm install --save-dev
+              - serverless plugin install -n serverless-offline
+              - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+              - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+              - sls deploy --stage development --region ap-south-1
